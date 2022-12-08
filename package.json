@@ -1,0 +1,19 @@
+{
+  "name": "the-cockatiel-family",
+  "version": "1.0.0",
+  "description": "Discord Bot Specifically for Ashatiel_",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "node ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ashatiel/The-Cockatiel-Family.git"
+  },
+  "author": "Ashatiel_",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ashatiel/The-Cockatiel-Family/issues"
+  },
+  "homepage": "https://github.com/Ashatiel/The-Cockatiel-Family#readme"
+}
