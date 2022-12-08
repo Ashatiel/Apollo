@@ -2,7 +2,7 @@
   "name": "the-cockatiel-family",
   "version": "1.0.0",
   "description": "Discord Bot Specifically for Ashatiel_",
-  "main": "src/index.js",
+  "main": "index.js",
   "scripts": {
     "test": "node ."
   },
