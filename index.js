@@ -20,9 +20,7 @@ for (const folder of functionFolders) {
 
 client.handleEvents();
 client.handleCommands();
-client.login(
-  "MTA1MDMxMjM3Njg1NzE1MzU4Ng.GbJVNM.f8nh9tPPAHDmTdcvKHlnx2UVOgUrbibzc1P6jk"
-);
+client.login("MTA1MDMxMjM3Njg1NzE1MzU4Ng.Gxso-Y.0KT256UDgKJnAcx4Kbj255Ma0nRsb1latLGN-A");
 (async () => {
   mongoose
     .connect("mongodb+srv://ash:root@cluster0.t3vqwgg.mongodb.net/discord")
