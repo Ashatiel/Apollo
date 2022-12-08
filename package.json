@@ -15,5 +15,11 @@
   "bugs": {
     "url": "https://github.com/Ashatiel/The-Cockatiel-Family/issues"
   },
-  "homepage": "https://github.com/Ashatiel/The-Cockatiel-Family#readme"
+  "homepage": "https://github.com/Ashatiel/The-Cockatiel-Family#readme",
+  "dependencies": {
+    "chalk": "^5.1.2",
+    "discord.js": "^14.7.1",
+    "dotenv": "^16.0.3",
+    "mongoose": "^6.8.0"
+  }
 }
