@@ -17,8 +17,9 @@ client.commands = new Collection();
 client.events = new Collection();
 client.guildConfig = new Collection();
 
-const { connect } = require("mongoose")
-connect(client.config.DatabaseURL, {
+const mongoose = require("mongoose")
+mongoose.set('strictQuery', false);
+mongoose.connect(client.config.DatabaseURL, {
 }).then(() => console.log("The Mongoose is now Connected."))
 
 loadConfig(client);
