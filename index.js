@@ -1,32 +1,25 @@
-const dotenv = require("dotenv");
-const mongoose = require("mongoose");
-const { Client, Collection, GatewayIntentBits } = require("discord.js");
-const fs = require("fs");
-dotenv.config();
+const { Client, Collection, GatewayIntentBits, Partials } = require("discord.js");
+const { Guilds, GuildMembers, GuildMessages } = GatewayIntentBits;
+const { User, Message, GuildMember, ThreadMember } = Partials;
 
-const client = new Client({ intents: GatewayIntentBits.Guilds });
+const { loadConfig } = require("./handlers/configLoader.js");
+const { loadEvents } = require("./handlers/eventHandler.js");
+
+const client = new Client({
+   intents: [Guilds, GuildMembers, GuildMessages ],
+   partials: [User, Message, GuildMember, ThreadMember],
+});
+
+client.config = require("./config.json");
 client.commands = new Collection();
-client.color = "FFFFFF";
-client.commandArray = [];
+client.events = new Collection();
+client.guildConfig = new Collection();
 
-const functionFolders = fs.readdirSync(`./functions`);
-for (const folder of functionFolders) {
-  const functionFiles = fs
-    .readdirSync(`./functions/${folder}`)
-    .filter((file) => file.endsWith(".js"));
-  for (const file of functionFiles)
-    require(`./functions/${folder}/${file}`)(client);
-}
+const { connect } = require("mongoose")
+connect(client.config.DatabaseURL, {
+}).then(() => console.log("The Mongoose is now Connected."))
 
-const { loadConfig } = require("./functions/handlers/configLoader.js");
 loadConfig(client);
+loadEvents(client);
 
-client.handleEvents();
-client.handleCommands();
-client.login("");
-(async () => {
-  mongoose
-    .connect("mongodb+srv://ash:root@cluster0.t3vqwgg.mongodb.net/discord")
-    .catch(console.error);
-})();
-mongoose.set("strictQuery", true);
+client.login(client.config.token);

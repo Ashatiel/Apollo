@@ -1,40 +1,95 @@
-const { SlashCommandBuilder } = require("discord.js");
+const { SlashCommandBuilder, PermissionFlagsBits, ChatInputCommandInteraction, EmbedBuilder } = require("discord.js");
+const Database = require("../../Schemas/infractions.js")
+const ms = require("ms")
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("timeout")
     .setDescription("Timeouts the member provided.")
-    .addUserOption((option) =>
-      option
+    .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers)
+    .setDMPermission(false)
+    .addUserOption(options => options
         .setName("target")
         .setDescription("The user you'd like to timeout")
         .setRequired(true)
     )
-    .addStringOption((option) =>
-      option
+    .addStringOption(options => options
+      .setName("duration")
+      .setDescription("The amount of time you're timing out a user for. (1m,1h,1d)")
+      .setRequired(true)
+  )
+    .addStringOption(options => options
         .setName("reason")
         .setDescription("The reason for timing out the user provided.")
-    )
-    .addIntegerOption((option) =>
-      option
-        .setName("time")
-        .setDescription("The amount of time you're timing out a user for.")
+        .setMaxLength(512)
     ),
-  async execute(interaction, client) {
-    const user = interaction.options.getUser("target");
-    let reason = interaction.options.getString("reason") || "None Specified";
-    let time = interaction.options.getInteger("time") || null;
+    /**
+     * 
+     * @param {ChatInputCommandInteraction} interaction 
+     */
+  async execute(interaction) {
+    const { options, guild, member } = interaction;
 
-    const member = await interaction.guild.members
-      .fetch(user.id)
-      .catch(console.error);
+    const target = options.getMember("target");
+    const duration = options.getString("duration");
+    const reason = options.getString("reason") || "None Specified."
 
+    const errorsArray = [];
 
-    await member.timeout(time == null ? null : time * 60 * 1000, reason)
-        .catch(console.error);
+    const errorsEmbed = new EmbedBuilder()
+    .setAuthor({name: "Could not timeout member due to"})
+    .setColor("Red");
 
-    await interaction.reply({
-      content: `${user.tag} has been timed out for ${time} minute(s).`,
+    if(!target) return interaction.reply({
+      embeds: [errorsEmbed.setDescription("Member has most likely left the server.")],
+      ephemeral: true
     });
-  },
-};
+
+    if(!ms(duration) || ms(duration) > ms("28d")) 
+    errorsArray.push("Time provided is invalid or over the 28d limit.");
+
+    if(!target.manageable || !target.moderatable)
+    errorsArray.push("Selected target is not moderatable by this bot.");
+
+    if(member.roles.highest.position < target.roles.highest.position)
+    errorsArray.push("Selected member has a higher position than you.")
+
+    if(errorsArray.length)
+    return interaction.reply({
+      embeds: [errorsEmbed.setDescription(errorsArray.join("\n"))],
+      ephemeral: true
+    });
+
+    target.timeout(ms(duration), reason).catch((err) => {
+      interaction.reply({
+        embeds: [errorsEmbed.setDescription("Could not timeout user due to an uncommon error.")]
+      })
+      return console.log("Error occured in the Timeout Command", err)
+    });
+   
+    const newInfractionsObject = {
+      IssuerID: member.id,
+      IssuerTag: member.user.tag,
+      Reason: reason,
+      Date: Date.now()
+    }
+
+    let userData = await Database.findOne({Guild: guild.id, User: target.id});
+    if(!userData) 
+    userData = await Database.create({Guild: guild.id, User: target.id, Infractions: [newInfractionsObject]});
+    else userData.Infractions.push(newInfractionsObject) && await userData.save();
+
+
+    const successEmbed = new EmbedBuilder()
+    .setAuthor({name: "Timeout Issues", iconURL: guild.iconURL()})
+    .setColor("Gold")
+    .setDescription([
+      `${target} was issued a timeout for **${ms(ms(duration), {long: true})}** by ${member}`,
+      `bringing their infractions total to **${userData.Infractions.length} points.**`,
+      `\nReason: ${reason}`
+    ].join("\n"));
+
+    return interaction.reply({embeds: [successEmbed]});
+  
+  }
+}

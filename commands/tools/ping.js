@@ -1,19 +1,14 @@
-const { SlashCommandBuilder } = require("discord.js");
+const { ChatInputCommandInteraction, SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("ping")
     .setDescription("Returns the Ping of the Bot."),
-  async execute(interaction, client) {
-    const message = await interaction.deferReply({
-      fetchReply: true,
-    });
-
-    const newMessage = `API Latency: ${client.ws.ping}\nClient Ping: ${
-      message.createdTimestamp - interaction.createdTimestamp
-    }`;
-    await interaction.editReply({
-      content: newMessage,
-    });
+    /**
+     * 
+     * @param {*} interaction 
+     */
+  async execute(interaction) {
+    interaction.reply({content: "Pong!", ephemeral: true});
   },
 };
