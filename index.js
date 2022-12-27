@@ -9,7 +9,7 @@ const { DisTube } = require("distube");
 const { SpotifyPlugin } = require("@distube/spotify");
 
 const { loadConfig } = require("./handlers/configLoader.js");
-const loadEvents = require("./handlers/eventHandler.js");
+const { loadEvents } = require("./handlers/eventHandler.js");
 
 const client = new Client({
    intents: [Guilds, GuildMembers, GuildMessages, GuildVoiceStates ],
