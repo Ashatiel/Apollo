@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, PermissionFlagsBits, ChatInputCommandInteraction, EmbedBuilder } = require("discord.js");
-const Database = require("../../Schemas/infractions.js")
+const Database = require("../../schemas/infractions")
 const ms = require("ms")
 
 module.exports = {
