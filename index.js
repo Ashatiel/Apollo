@@ -18,6 +18,9 @@ for (const folder of functionFolders) {
     require(`./functions/${folder}/${file}`)(client);
 }
 
+const { loadConfig } = require("./functions/configLoader.js");
+loadConfig(client);
+
 client.handleEvents();
 client.handleCommands();
 client.login("");
