@@ -23,7 +23,7 @@ mongoose.connect(client.config.DatabaseURL, {
 }).then(() => console.log("The Mongoose is now Connected."))
 
 loadConfig(client);
-loadEvents(client);
+// loadEvents(client);
 
 const token = process.env.token
 client.login(token);
