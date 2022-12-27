@@ -1,5 +1,5 @@
 async function loadEvents(client) {
-    const { loadFiles } = require("./fileLoader.js");
+    const loadFiles  = require("../handlers/fileLoader");
     const ascii = require("ascii-table");
     const table = new ascii().setHeading("Events", "Status");
 
