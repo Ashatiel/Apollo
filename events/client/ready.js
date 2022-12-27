@@ -1,6 +1,6 @@
 const { loadCommands } = require("../../handlers/commandHandler.js")
-const { loadConfig } = require("./handlers/configLoader.js");
-const { loadEvents } = require("./handlers/eventHandler.js");
+const { loadConfig } = require("../../handlers/configLoader.js");
+const { loadEvents } = require("../../handlers/eventHandler");
 
 module.exports = {
   name: "ready",
