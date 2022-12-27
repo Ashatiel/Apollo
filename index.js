@@ -10,7 +10,6 @@ const { SpotifyPlugin } = require("@distube/spotify");
 
 const { loadConfig } = require("./handlers/configLoader.js");
 const { loadEvents } = require("./handlers/eventHandler.js");
-const { loadCommands } = require("./handlers/commandHandler.js");
 
 const client = new Client({
    intents: [Guilds, GuildMembers, GuildMessages, GuildVoiceStates ],
@@ -38,7 +37,6 @@ mongoose.connect(client.config.DatabaseURL, {
 
 loadConfig(client);
 loadEvents(client);
-loadCommands(client)
 
 const token = process.env.token
 client.login(token);
