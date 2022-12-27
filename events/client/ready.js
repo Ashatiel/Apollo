@@ -6,6 +6,6 @@ module.exports = {
   async execute(client) {
     console.log(`Chirp! The Cockatiel Family is flying in! Chirp!`);
   
-    // loadCommands(client)
+     loadCommands(client)
   },
 };
