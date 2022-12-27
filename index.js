@@ -1,6 +1,8 @@
 const { Client, Collection, GatewayIntentBits, Partials } = require("discord.js");
 const { Guilds, GuildMembers, GuildMessages } = GatewayIntentBits;
 const { User, Message, GuildMember, ThreadMember } = Partials;
+const { config } = require('dotenv')
+config();
 
 const { loadConfig } = require("./handlers/configLoader.js");
 const { loadEvents } = require("./handlers/eventHandler.js");
@@ -22,4 +24,5 @@ connect(client.config.DatabaseURL, {
 loadConfig(client);
 loadEvents(client);
 
-client.login(client.config.token);
+const token = process.env.token
+client.login(token);
