@@ -1,25 +1,27 @@
 async function loadCommands(client) {
-  const { loadFiles } = require("./fileLoader.js");
   const ascii = require("ascii-table");
-  const table = new ascii().setHeading("Commands", "Status");
-
-  await client.commands.clear();
+  const table = new ascii().setHeading("Events", "Status");
+  const fs = require("fs")
 
   let commandsArray = [];
 
-  const Files = await loadFiles("Commands");
-  Files.forEach((file) => {
-    const command = require(file);
-    client.commands.set(command.data.name, command);
+  const commandsFolder = fs.readdirSync('./Commands');
+  for (const folder of commandsFolder) {
+      const commandFiles = fs.readdirSync(`./Commands/${folder}`).filter((file) => file.endsWith('.js'));
 
-    commandsArray.push(command.data.toJSON());
-    
-    table.addRow(command.data.name, "✅");
-  });
+      for (const file of commandFiles) {
+          const commandFile = require(`../Commands/${folder}/${file}`);
+          client.commands.set(commandFile.data.name, commandFile);
+
+          commandsArray.push(commandFile.data.toJSON());
+
+          table.addRow(file, "Loaded");
+          continue;
+      }
+  }
 
   client.application.commands.set(commandsArray);
-
-  return console.log(table.toString(), "\nCommands Loaded.")
+  return console.log(table.toString(), "\nLoaded Commands!")
 }
 
 module.exports = { loadCommands };

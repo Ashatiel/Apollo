@@ -1,31 +1,34 @@
 async function loadEvents(client) {
-    const { loadFiles } = require("./fileLoader.js");
     const ascii = require("ascii-table");
     const table = new ascii().setHeading("Events", "Status");
+    const fs = require("fs")
 
-    await client.events.clear();
-    const Files = await loadFiles("Events")
+    const folders = fs.readdirSync('./Events');
+    for (const folder of folders) {
+        const files = fs.readdirSync(`./Events/${folder}`).filter((file) => file.endsWith(".js"));
 
-    Files.forEach((file) => {
-        const event = require(file);
+        for (const file of files) {
+            const event = require(`../Events/${folder}/${file}`);
 
-        const execute = (...args) => event.execute(...args, client);
-        client.events.set(event.name, execute);
-
-        if (event.rest) {
-            if(event.once) client.rest.once(event.name, execute);
-            else
-            client.rest.on(event.name, execute);
-        } else {
-            if(event.once) client.once(event.name, execute);
-            else
-            client.on(event.name, execute);
+            if (event.rest) {
+                if(event.once)
+                client.rest.once(event.name, (...args) => 
+                event.execute(...args, client)
+                )
+                else
+                    client.rest.on(event.name, (...args) =>
+                        event.execute(...args, client)
+                    );
+            } else {
+                if (event.once)
+                    client.once(event.name, (...args) => event.execute(...args, client));
+                else client.on(event.name, (...args) => event.execute(...args, client))
+            }
+            table.addRow(file, "Loaded.")
+            continue;
         }
-
-        table.addRow(event.name, "✅")
-    })
-
-    return console.log(table.toString(), "\nLoaded Events.");
+    }
+    return console.log(table.toString(), "\nLoaded Events.")
 }
 
 module.exports = { loadEvents };
