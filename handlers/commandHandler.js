@@ -1,6 +1,6 @@
 async function loadCommands(client) {
   const ascii = require("ascii-table");
-  const table = new ascii().setHeading("Events", "Status");
+  const table = new ascii().setHeading("Commands", "Status");
   const fs = require("fs")
 
   let commandsArray = [];

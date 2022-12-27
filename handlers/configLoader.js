@@ -1,5 +1,4 @@
 const configDatabase = require("../schemas/MemberLog.js");
-const { loadCommands } = require("./commandHandler.js");
 
 async function loadConfig(client) {
 	(await configDatabase.find()).forEach((doc) => {
@@ -10,7 +9,6 @@ async function loadConfig(client) {
         });
     });
     
-    loadCommands(client)
     return console.log("Loaded Guild Configs to the Collection.")
 }
 
