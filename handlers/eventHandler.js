@@ -23,7 +23,6 @@ async function loadEvents(client) {
         }
 
         table.addRow(event.name, "✅")
-        console.log('testing')
     })
 
     return console.log(table.toString(), "\nLoaded Events.");
