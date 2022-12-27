@@ -20,7 +20,7 @@ module.exports = {
     let reason = interaction.options.getString("reason");
     const member = await interaction.guild.members
       .fetch(user.id)
-      .cache(console.error);
+      .catch(console.error);
 
     if (!reason) reason = "No reason provided.";
 

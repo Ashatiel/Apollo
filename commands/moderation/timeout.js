@@ -21,23 +21,20 @@ module.exports = {
         .setDescription("The amount of time you're timing out a user for.")
     ),
   async execute(interaction, client) {
-    const target_user = interaction.options.getUser("target");
-    let reason = interaction.options.getString("reason");
-    let time = interaction.options.getInteger("time");
+    const user = interaction.options.getUser("target");
+    let reason = interaction.options.getString("reason") || "None Specified";
+    let time = interaction.options.getInteger("time") || null;
 
     const member = await interaction.guild.members
-      .fetch(target_user.id)
-      .cache(console.error);
-
-    if (!reason) return (reason = "No reason provided.");
-    if (!time) return (time = null);
-
-    await member
-      .timeout(time == null ? null : time * 60 * 1000, reason)
+      .fetch(user.id)
       .catch(console.error);
 
+
+    await member.timeout(time == null ? null : time * 60 * 1000, reason)
+        .catch(console.error);
+
     await interaction.reply({
-      content: `${user.tag} has been timed out for ${time}.`,
+      content: `${user.tag} has been timed out for ${time} minute(s).`,
     });
   },
 };
