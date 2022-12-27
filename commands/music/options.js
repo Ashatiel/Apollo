@@ -41,10 +41,6 @@ module.exports = {
              )
             )
         ),
-        /**
-         * 
-         * @param {ChatInputCommandInteraction} interaction 
-         */
         async execute(interaction) {
             const { options, member, guild, channel } = interaction;
 

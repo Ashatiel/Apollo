@@ -21,9 +21,6 @@ module.exports = {
     .setName("bot_role")
     .setDescription("Set the role to be automatically added to any new bots.")
     ),
-    /**
-     * @param {ChatInputCommandInteraction} interaction
-     */
     async execute(interaction, client) {
         const { guild, options } = interaction;
 

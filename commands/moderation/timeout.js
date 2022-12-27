@@ -23,10 +23,6 @@ module.exports = {
         .setDescription("The reason for timing out the user provided.")
         .setMaxLength(512)
     ),
-    /**
-     * 
-     * @param {ChatInputCommandInteraction} interaction 
-     */
   async execute(interaction) {
     const { options, guild, member } = interaction;
 

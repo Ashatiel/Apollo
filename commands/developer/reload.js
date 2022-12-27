@@ -15,11 +15,6 @@ const loadEvents = require("../../handlers/eventHandler.js")
         .addSubcommand((options) => options
         .setName("commands")
         .setDescription("Reload the commands of the bot.")),
-        /**
-         * 
-         * @param {ChatInputCommandInteraction} interaction 
-         * @param {Client} client 
-         */
         execute(interaction, client) {
             const subCommand = interaction.options.getSubcommand();
             

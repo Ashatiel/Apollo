@@ -19,10 +19,6 @@ module.exports = {
         .setName("target")
         .setDescription("Provide the target member to only delete their messages.")
     ),
-    /**
-     * 
-     * @param {ChatInputCommandInteraction} interaction 
-     */
     async execute(interaction, client) {
         const Amount = interaction.options.getNumber("amount");
         const Target = interaction.options.getUser("target");

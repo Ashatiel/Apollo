@@ -7,11 +7,6 @@ module.exports = {
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
     .setDMPermission(false),
     developer: true,
-    /**
-     * 
-     * @param {ChatInputCommandInteraction} interaction 
-     * @param {Client} client 
-     */
     execute(interaction, client) {
         client.emit("guildMemberAdd", interaction.member);
         client.emit("guildMemberRemove", interaction.member);
