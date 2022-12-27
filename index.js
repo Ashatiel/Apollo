@@ -5,7 +5,7 @@ const { config } = require('dotenv')
 config();
 
 const { loadConfig } = require("./handlers/configLoader.js");
-const { loadEvents } = require("./handlers/eventHandler.js");
+const loadEvents = require("./handlers/eventHandler.js");
 
 const client = new Client({
    intents: [Guilds, GuildMembers, GuildMessages ],
@@ -23,7 +23,7 @@ mongoose.connect(client.config.DatabaseURL, {
 }).then(() => console.log("The Mongoose is now Connected."))
 
 loadConfig(client);
-// loadEvents(client);
+loadEvents(client);
 
 const token = process.env.token
 client.login(token);

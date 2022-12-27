@@ -1,4 +1,4 @@
-async function loadEvents(client) {
+module.exports = async function loadEvents(client) {
     const loadFiles  = require("../handlers/fileLoader");
     const ascii = require("ascii-table");
     const table = new ascii().setHeading("Events", "Status");
@@ -23,9 +23,8 @@ async function loadEvents(client) {
         }
 
         table.addRow(event.name, "✅")
+        
     })
 
     return console.log(table.toString(), "\nLoaded Events.");
 }
-
-module.exports = { loadEvents };
