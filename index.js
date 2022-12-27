@@ -8,6 +8,10 @@ config();
 const { DisTube } = require("distube");
 const { SpotifyPlugin } = require("@distube/spotify");
 
+const { loadConfig } = require("./handlers/configLoader.js");
+const { loadEvents } = require("./handlers/eventHandler.js");
+const { loadCommands } = require("./handlers/commandHandler.js");
+
 const client = new Client({
    intents: [Guilds, GuildMembers, GuildMessages, GuildVoiceStates ],
    partials: [User, Message, GuildMember, ThreadMember],
@@ -27,10 +31,14 @@ client.commands = new Collection();
 client.events = new Collection();
 client.guildConfig = new Collection();
 
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 mongoose.set('strictQuery', false);
 mongoose.connect(client.config.DatabaseURL, {
 }).then(() => console.log("The Mongoose is now Connected."))
+
+loadConfig(client);
+loadEvents(client);
+loadCommands(client)
 
 const token = process.env.token
 client.login(token);
