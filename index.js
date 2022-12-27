@@ -29,7 +29,6 @@ client.config = require("./config.json");
 client.commands = new Collection();
 client.events = new Collection();
 client.guildConfig = new Collection();
-client.subCommands = new Collection();
 
 const mongoose = require("mongoose")
 mongoose.set('strictQuery', false);
